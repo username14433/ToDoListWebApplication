@@ -2,6 +2,7 @@ package org.rockend.to_do_list_web_application.controller;
 
 import org.rockend.to_do_list_web_application.entity.Record;
 import org.rockend.to_do_list_web_application.entity.RecordStatus;
+import org.rockend.to_do_list_web_application.entity.dto.RecordsContainerDTO;
 import org.rockend.to_do_list_web_application.service.RecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,18 +28,12 @@ public class CommonController {
     }
 
     @GetMapping("/home")
-    public String getMainPage(Model model){
-        List<Record> records = recordService.findAllRecords();
-        int numberOfDoneRecords = (int) records.stream().
-                filter(record -> record.getStatus() == RecordStatus.DONE).count();
-        int numberOfActiveRecords = (int) records.stream().
-                filter(record -> record.getStatus() == RecordStatus.ACTIVE).count();
-        recordService.findAllRecords();
+    public String getMainPage(Model model, @RequestParam(name="filter",  required = false) String filterMode) {
+        RecordsContainerDTO container = recordService.findAllRecords(filterMode);
 
-
-        model.addAttribute("numberOfDoneRecords", numberOfDoneRecords);
-        model.addAttribute("numberOfActiveRecords", numberOfActiveRecords);
-        model.addAttribute("records", records);
+        model.addAttribute("numberOfDoneRecords", container.getNumberOfDoneRecords());
+        model.addAttribute("numberOfActiveRecords", container.getNumberOfActiveRecords());
+        model.addAttribute("records", container.getRecords());
         return "main-page";
     }
 
@@ -49,14 +44,16 @@ public class CommonController {
     }
 
     @PostMapping("/make-record-done")
-    public String makeRecordDone(@RequestParam int id){
+    public String makeRecordDone(@RequestParam int id,
+                                 @RequestParam(name = "filter", required = false) String filterMode){
         recordService.updateRecordStatus(id, RecordStatus.DONE);
-        return "redirect:/home";
+        return "redirect:/home" + (filterMode != null && !filterMode.isBlank() ? "?filter=" + filterMode : "");
     }
 
     @PostMapping("/delete-record")
-    public String deleteRecord(@RequestParam int id) {
+    public String deleteRecord(@RequestParam int id,
+                               @RequestParam(name = "filter", required = false) String filterMode) {
         recordService.deleteRecord(id);
-        return "redirect:/home";
+        return "redirect:/home" + (filterMode != null && !filterMode.isBlank() ? "?filter=" + filterMode : "");
     }
 }
