@@ -23,6 +23,7 @@ button {
     transition: background-color .1s ease-in-out;
 }
 
+
 .button_type_close {
     background-color: transparent;
     padding: 5px 8px 6px 8px;

@@ -1,6 +1,5 @@
 package org.rockend.to_do_list_web_application.controller;
 
-import org.rockend.to_do_list_web_application.entity.Record;
 import org.rockend.to_do_list_web_application.entity.RecordStatus;
 import org.rockend.to_do_list_web_application.entity.dto.RecordsContainerDTO;
 import org.rockend.to_do_list_web_application.service.RecordService;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
 
 @Controller
 public class CommonController {
