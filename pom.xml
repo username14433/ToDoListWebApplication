@@ -26,6 +26,8 @@
         <hibernate.version>7.1.4.Final</hibernate.version>
         <jakarta.version>3.2.0</jakarta.version>
         <spring-boot-starter-web.version>4.0.0-M3</spring-boot-starter-web.version>
+        <tomcat-embed.version>11.0.12</tomcat-embed.version>
+        <dbcp.version>2.13.0</dbcp.version>
 	</properties>
 	<dependencies>
 
@@ -60,7 +62,7 @@
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-jasper</artifactId>
-            <version>11.0.12</version>
+            <version>${tomcat-embed.version}</version>
         </dependency>
 
         <!-- Spring -->
@@ -100,6 +102,11 @@
             <groupId>jakarta.persistence</groupId>
             <artifactId>jakarta.persistence-api</artifactId>
             <version>${jakarta.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-dbcp2</artifactId>
+            <version>${dbcp.version}</version>
         </dependency>
 	</dependencies>
 

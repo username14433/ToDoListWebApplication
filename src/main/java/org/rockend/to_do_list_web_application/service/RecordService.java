@@ -6,12 +6,14 @@ import org.rockend.to_do_list_web_application.entity.RecordStatus;
 import org.rockend.to_do_list_web_application.entity.dto.RecordsContainerDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class RecordService {
     private final RecordDao recordDao;
 
@@ -20,6 +22,7 @@ public class RecordService {
         this.recordDao = recordDao;
     }
 
+    @Transactional(readOnly = true)
     public RecordsContainerDTO findAllRecords(String filterMode) {
         List<Record> records = recordDao.findAllRecords();
         int numberOfDoneRecords = (int) records.stream()
