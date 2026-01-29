@@ -15,11 +15,11 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
-public class RecordService {
+public class RecordServiceImpl implements RecordService {
     private final RecordRepository recordRepository;
 
     @Autowired
-    public RecordService(RecordRepository recordRepository) {
+    public RecordServiceImpl(RecordRepository recordRepository) {
         this.recordRepository = recordRepository;
     }
 
@@ -52,9 +52,6 @@ public class RecordService {
             return new  RecordsContainerDTO(records, numberOfDoneRecords, numberOfActiveRecords);
         }
     }
-
-    //Заменяем все наши "кастомные методы для работы с БД теми, которые предоставляет интерфейс JpaRepository"
-    //Кастомным в данном случае остаётся только update
 
 
     public void saveRecord(String title) {

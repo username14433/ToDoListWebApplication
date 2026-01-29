@@ -1,4 +1,4 @@
-package org.rockend.controller;
+package org.rockend.controller.exception;
 
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;
@@ -12,7 +12,7 @@ public class GlobalExceptionHandler implements ErrorController {
 
     @GetMapping("/error")
     public String getErrorPage() {
-        return "error-page";
+        return "public/error/error-page";
     }
 
     @ExceptionHandler(Throwable.class)
