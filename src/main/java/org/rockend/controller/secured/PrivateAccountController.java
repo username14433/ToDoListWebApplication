@@ -32,8 +32,7 @@ public class PrivateAccountController {
     public String getMainPage(Model model, @RequestParam(name="filter",  required = false) String filterMode) {
         RecordsContainerDTO container = recordServiceImpl.findAllRecords(filterMode);
 
-        User user = userServiceImpl.getCurrentUser();
-        model.addAttribute("userName", user.getName());
+        model.addAttribute("userName", container.getUserName());
         model.addAttribute("numberOfDoneRecords", container.getNumberOfDoneRecords());
         model.addAttribute("numberOfActiveRecords", container.getNumberOfActiveRecords());
         model.addAttribute("records", container.getRecords());

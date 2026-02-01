@@ -2,6 +2,8 @@ package org.rockend.repository;
 
 import org.rockend.entity.Record;
 import org.rockend.entity.RecordStatus;
+import org.rockend.entity.User;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
