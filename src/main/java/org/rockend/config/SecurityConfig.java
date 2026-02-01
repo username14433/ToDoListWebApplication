@@ -41,7 +41,7 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable) //disable csrf
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/registration", "/error", "/css/**").permitAll()
+                        .requestMatchers("/", "/registration", "/error/**", "/css/**").permitAll()
                         .requestMatchers("/account/**").hasAnyRole(UserRole.USER.name(), UserRole.ADMIN.name())
                         .requestMatchers("/admin/**").hasRole(UserRole.ADMIN.name())
                 )
