@@ -1,26 +1,70 @@
 package org.rockend.controller.secured;
 
 import org.rockend.entity.User;
+import org.rockend.entity.UserRole;
+import org.rockend.service.UserService;
 import org.rockend.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 @Controller
+@RequestMapping("/admin")
 public class PrivateAdminController {
 
-    UserServiceImpl userServiceImpl;
+    private final UserService userService;
     @Autowired
-    public PrivateAdminController(UserServiceImpl userServiceImpl) {
-        this.userServiceImpl = userServiceImpl;
+    public PrivateAdminController(UserService userService) {
+        this.userService = userService;
     }
 
-    @GetMapping("/admin")
+    @GetMapping
     public String getManagementPage(Model model) {
-        User user = userServiceImpl.getCurrentUser();
+        User user = userService.getCurrentUser();
+
+        if (user.isSuperAdmin()) {
+            List<User> candidatesToDelete = userService.findAllByRoleIn(Arrays.asList(UserRole.USER, UserRole.ADMIN));
+            List<User> candidatesToUpgrade = candidatesToDelete.stream().filter(User::isSimpleUser).toList();
+            model.addAttribute("candidatesToDelete", candidatesToDelete);
+            model.addAttribute("candidatesToUpgrade", candidatesToUpgrade);
+        }else {
+            List<User> candidatesToDelete = userService.findAllByRoleIn(Collections.singleton(UserRole.USER));
+            model.addAttribute("candidatesToDelete", candidatesToDelete);
+        }
+
         model.addAttribute("userName", user.getName());
         return "private/admin/management-page";
     }
+
+    @PostMapping("/delete-user")
+    public String deleteUser(@RequestParam int id) {
+        Optional<User> userToBeDeletedOpt = userService.findById(id);
+        if (userToBeDeletedOpt.isEmpty()) {
+            return "redirect:/admin";
+        }
+
+        User userToBeDeleted = userToBeDeletedOpt.get();
+        User currentUser = userService.getCurrentUser();
+
+        if (userToBeDeleted.isSuperAdmin()) {
+            return "redirect:/admin";
+        }
+
+        if (userToBeDeleted.isAdmin() && !currentUser.isSuperAdmin()) {
+            return "redirect:/admin";
+        }
+        userService.deleteById(id);
+        return "redirect:/admin";
+    }
+
 }

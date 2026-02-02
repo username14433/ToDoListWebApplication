@@ -42,8 +42,10 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable) //disable csrf
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/registration", "/error/**", "/css/**").permitAll()
-                        .requestMatchers("/account/**").hasAnyRole(UserRole.USER.name(), UserRole.ADMIN.name())
-                        .requestMatchers("/admin/**").hasRole(UserRole.ADMIN.name())
+                        .requestMatchers("/account/**").hasAnyRole(UserRole.USER.name(), UserRole.ADMIN.name(),
+                                                                    UserRole.SUPER_ADMIN.name())
+                        .requestMatchers("/admin/**").hasAnyRole(UserRole.ADMIN.name(), UserRole.SUPER_ADMIN.name())
+                        .requestMatchers("/super-admin/**").hasRole(UserRole.SUPER_ADMIN.name())
                 )
                 .formLogin(form -> form
                         .loginPage("/login").permitAll()

@@ -11,6 +11,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
@@ -33,8 +38,14 @@ public class UserServiceImpl implements UserService {
 //        userRepository.save(user);
 //    }
 
+    @Override
     public void save(User user) {
         userRepository.save(user);
+    }
+
+    @Override
+    public void deleteById(int id) {
+        userRepository.deleteById(id);
     }
 
     @Override
@@ -43,5 +54,20 @@ public class UserServiceImpl implements UserService {
         return userRepository
                 .findByEmailIgnoreCase(email)
                 .orElseThrow(() -> new IllegalArgumentException("User with email = " + email + " not found"));
+    }
+
+    @Override
+    public List<User> findAllByRoleIn(Collection<UserRole> roles) {
+        return userRepository.findAllByRoleInOrderById(roles);
+    }
+
+    @Override
+    public Optional<User> findById(int id) {
+        return userRepository.findById(id);
+    }
+
+    @Override
+    public void updateRole(int id, UserRole newRole) {
+        userRepository.updateRole(id, newRole);
     }
 }

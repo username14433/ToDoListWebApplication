@@ -68,9 +68,9 @@ public class PublicAuthorizationController {
         String encodedPassword = passwordEncoder.encode(password);
         User user = new User(name, email, encodedPassword, UserRole.USER);
 
-        request.login(email, password); //Просто логиним пользователя одной функцией login()
-
         userService.save(user);
+
+        request.login(email, password); //Просто логиним пользователя одной функцией login()
 //        forceAutoLogin(email, password, request, response);
         return "redirect:/account";
     }
