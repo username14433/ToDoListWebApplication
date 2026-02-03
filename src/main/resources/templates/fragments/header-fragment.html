@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:sec="https://www.thymeleaf.org/extras/spring-security" xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Header Fragment</title>
@@ -14,7 +14,8 @@
                 <div class="navbar-container__controls">
                     <a href="/account" class="navbar-container__controls-link">Account</a>
                 </div>
-                <div class="navbar-container__controls">
+<!--            Используем sec:authorize для того, чтобы данный тег отображался только у пользователей имеющих данные роли-->
+                <div sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_SUPER_ADMIN')" class="navbar-container__controls">
                     <a href="/admin" class="navbar-container__controls-link">Management</a>
                 </div>
             </div>
